@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Checkers 3D</title>
+	<style>
+		* {padding: 0; margin: 0;}
+	</style>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+	function flash(id){
+		var h = $(window).innerHeight();
+		var w = $(window).innerWidth();
+		
+		//alert($(window).innerHeight()+' | '+$(window).outerHeight());
+		$('#'+id).width(w);
+		$('#'+id).height(h);
+	}
+	</script>
+  </head>
+
+  <body onload="flash('emb')">
+	<embed style='' width="1024px" height="768px" src='Checkers3D.swf' type='application/x-shockwave-flash' wmode = 'direct' id='emb'></embed>
+  </body>
+</html>
