@@ -26,7 +26,6 @@ package {
 	import alternativa.engine3d.lights.AmbientLight;
 	import alternativa.engine3d.lights.DirectionalLight;
 	
-	import com.WarningText;
 	import com.MathUtils;
 	
 	import events.PageEvent;
@@ -43,9 +42,6 @@ package {
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode
 	import flash.events.Event;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.net.URLLoaderDataFormat;
 
 	[SWF(width = "800", height = "600", backgroundColor = "#404060")] 
 	
@@ -57,7 +53,6 @@ package {
 		private var camera:Camera3D;
 		private var stage3D:Stage3D;
 		
-		private var obj:Object3D;
 		private var directionalLight:DirectionalLight;			// Направленный источник света
 		private var ambientLight:AmbientLight;
 				
