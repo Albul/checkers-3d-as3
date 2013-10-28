@@ -2,11 +2,7 @@
 	import events.PageEvent;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	
-	/**
-	 * ...
-	 * @author Romanko Denis (Stormit) http://xitri.com
-	 */
+
 	public class BasePage extends Sprite {
 		protected var _visual:Sprite;
 		
@@ -46,5 +42,4 @@
 		public function get visual():Sprite { return _visual; }
 		
 	}
-	
 }

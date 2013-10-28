@@ -3,11 +3,7 @@
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	
-	/**
-	 * ...
-	 * @author Romanko Denis (Stormit) http://xitri.com
-	 */
+
 	public class MenuPage extends BasePage{
 		private var btnPlay:SimpleButton;
 		private var btnLan:SimpleButton;
@@ -52,5 +48,4 @@
 		}
 		
 	}
-	
 }

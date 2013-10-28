@@ -34,20 +34,18 @@ package  {
 		
 		[Embed(source = "../res/board.A3D", mimeType = "application/octet-stream")] static private var mBoard:Class;
 		[Embed(source = "../res/images/board.png")] static private var bBoard:Class;
-		
-		
-		// Размеры шашки
+
 		static public var WIDTH_CHECKER:Number;
 		static public var HEIGHT_CHECKER:Number;
 		
-		private var rootContainer:Object3D;		// Корневой контейнер куда добавляем всю графику
-		private var blackChecker:Mesh;			// Меш черной шашки
-		private var whiteChecker:Mesh;			// Меш белой шашки
+		private var rootContainer:Object3D;
+		private var blackChecker:Mesh;
+		private var whiteChecker:Mesh;
 		
-		private var _structCells:Object = new Object();		// Структура клеток
-		private var _arrWhiteCheckers:Array;				// Массив белых шашек
-		private var _arrBlackCheckers:Array;  				// Массив черных шашек
-		private var _arrAllCheckers:Array;  				// Массив всех шашек
+		private var _structCells:Object = new Object();
+		private var _arrWhiteCheckers:Array;
+		private var _arrBlackCheckers:Array;
+		private var _arrAllCheckers:Array;
 		
 		public function Graphic(rootContainer:Object3D, context:Context3D) {
 			this.rootContainer = rootContainer;
@@ -58,113 +56,94 @@ package  {
 			var rBoard:BitmapTextureResource = new BitmapTextureResource(new bBoard().bitmapData);
 			var tBoard:VertexLightTextureMaterial = new VertexLightTextureMaterial(rBoard);
 			rBoard.upload(context);
-			
-			
+
 			for each (var object:Object3D in parser.objects) {
-				
 				var mesh:Mesh = object as Mesh;
-				
 				if (mesh == null) {		
 					continue;
 				}
-					
 				mesh.setMaterialToAllSurfaces(tBoard);
 				
-				if (mesh.name == "White") {						// Белая шашка
+				if (mesh.name == "White") {     // White checker
 					this.whiteChecker = mesh;											
 			
-					// Запоминаем размеры шашки
-					Graphic.WIDTH_CHECKER = mesh.boundBox.maxX - mesh.boundBox.minX;  	// Ширина шашки
-					Graphic.HEIGHT_CHECKER = mesh.boundBox.maxZ - mesh.boundBox.minZ;  	// Высота шашки
+					// Remember the size of checker
+					Graphic.WIDTH_CHECKER = mesh.boundBox.maxX - mesh.boundBox.minX;
+					Graphic.HEIGHT_CHECKER = mesh.boundBox.maxZ - mesh.boundBox.minZ;
 				}		
-				
-				
-				if (mesh.name == "Black") {						// Черная шашка
+
+				if (mesh.name == "Black") {     // Black checker
 					this.blackChecker = mesh;
 				}	
-				
-				
-				if (mesh.name == "Board") {						// Игровая доска
+
+				if (mesh.name == "Board") {     // Game board
 					this.rootContainer.addChild(mesh);
 				}
-		
-				
-				// Добавление клеток на доску
+
+				// Adding cells to the board
 				if (mesh.name.substr(3, 4) == "cell") {	
-					var cell:Cell = new Cell(mesh, mesh.name);	// Создаем клетку
-					this.structCells[cell.getIndex()] = cell;	// Заносим в структуру клеток
-					this.rootContainer.addChild(cell);			// Добавляем на сцену
+					var cell:Cell = new Cell(mesh, mesh.name);
+					this.structCells[cell.getIndex()] = cell;
+					this.rootContainer.addChild(cell);
 				}
-			
-				
+
 				uploadResources(mesh.getResources(false, Geometry), context);
 			}
 		}
 		
-		
-		
+
 		//--------------------------------------------------------------------------
 		//
 		//  Public methods
 		//
 		//--------------------------------------------------------------------------
 		
-		
-		/**
-		 * Расставить шашки на доске
-		 */
+
 		public function arrangeCheckers():void {
 			
-			this._arrWhiteCheckers = new Array();	// Массив белых шашек
-			this._arrBlackCheckers = new Array();   // Массив черных шашек
-			this._arrAllCheckers = new Array();   	// Массив всех шашек
-			
-			//----------------------------------
-			//  Расстановка белых шашек
-			//----------------------------------
+			this._arrWhiteCheckers = new Array();
+			this._arrBlackCheckers = new Array();
+			this._arrAllCheckers = new Array();
+
+			// Arrangement of white checkers ---
 			var i:int = 1;
 			var j:int = 1;
 			var checker:Checker;
 			var currentCell:Cell;
-			
-			// Проходим первые три ряда (для белых)
+
 			while (i <= 3) {
 				while (j <= 8) {
-					checker = new Checker(this.whiteChecker.clone(), Logic.WHITE_TEAM);		// Создаем шашку
-					currentCell = this.structCells[String(i) + String(j)];					// Берем нужную клетку из структуры
+					checker = new Checker(this.whiteChecker.clone(), Logic.WHITE_TEAM);
+					currentCell = this.structCells[String(i) + String(j)];
 					
-					checker.moveTo(currentCell, true); 			// Помещаем шашку на выбраную клетку
+					checker.moveTo(currentCell, true);
 					
-					this.rootContainer.addChild(checker);		// Добавляем шашку в главный контейнер
-					this._arrWhiteCheckers.push(checker);		// Добавляем шашку в массив белых шашек
-					this._arrAllCheckers.push(checker);			// Добавляем шашку в массив всех шашек
+					this.rootContainer.addChild(checker);
+					this._arrWhiteCheckers.push(checker);
+					this._arrAllCheckers.push(checker);
 										
 					j += 2;
 				}
 				
 				i++;
-				j = (i % 2 == 0)? 2 : 1;	// Розставляем только на черные клетки, поэтому если рядок парный тогда столбец непарный, и наоборот
+				j = (i % 2 == 0)? 2 : 1;	// Set only on the black cells
 			}
 			//----------------------------------
-			
-			
-			//----------------------------------
-			//  Расстановка черных шашек
-			//----------------------------------
+
+			// Arrangement of black checkers ---
 			i = 8;
 			j = 2;
-			
-			// Проходим последние три ряда (для черных)
+
 			while (i >= 6) {
 				while (j <= 8) {
 					checker = new Checker(this.blackChecker.clone(), Logic.BLACK_TEAM);
 					currentCell = this.structCells[String(i) + String(j)];
 					
-					checker.moveTo(currentCell, true); 			// Помещаем шашку на выбраную клетку
+					checker.moveTo(currentCell, true);
 					
 					this.rootContainer.addChild(checker);
 					this._arrBlackCheckers.push(checker);
-					this._arrAllCheckers.push(checker);			// Добавляем шашку в массив всех шашек
+					this._arrAllCheckers.push(checker);
 
 					j += 2;
 				}
@@ -174,14 +153,9 @@ package  {
 			}
 			//----------------------------------
 		}
-		
-		
-		/**
-		 * Переустановить шашки на доске
-		 */
+
 		public function resetCheckers():void {
-			
-			// Сначала удаляем все шашки из сцены
+
 			while (this._arrAllCheckers.length > 0) {
 				this.rootContainer.removeChild(this._arrAllCheckers.pop());
 			}
@@ -192,17 +166,14 @@ package  {
 				}
 			}*/
 			
-			// Проходим по всем клеткам и делаем их свободными
 			for each (var cell:Cell in this._structCells) {
 				cell.currentChecker = null;
 				cell.isOccupied = null;
 			}
 			
-			// Делаем новую растановку шашек
 			arrangeCheckers();
 		}
-		
-		
+
 		public function get structCells():Object {
 			return _structCells;
 		}
@@ -214,19 +185,12 @@ package  {
 		public function get arrBlackCheckers():Array {
 			return _arrBlackCheckers;
 		}
-		
-		
-		/**
-		 * @private
-		 * Загрузка ресурсов у контекст
-		 */
+
 		private function uploadResources(resources:Vector.<Resource>, context:Context3D):void {
 			for each (var resource:Resource in resources) {
 				resource.upload(context);
 			}
 		}
-		
-		
-	}
 
+	}
 }

@@ -20,22 +20,20 @@
 package com {
 	
 	/**
-	 * 
-	 * Класс для создания случайной перестановки массива и его вывода
-	 * 
+	 * Class for creating random permutation array and its output
 	 */
 	public class RandomArrayOutput extends Object {
 		
-		public var isPrinted:Boolean;				// Публичный флаг - опредиляет был ли выведен массив полностью
+		public var isPrinted:Boolean;				// Whether printed the whole array
 		
-		private var arrayIndx:Array;				// Массив индексов
-		private var arrayData:Array;				// Массив данных
-		private var i:int;							// Щетчик
+		private var arrayIndx:Array;
+		private var arrayData:Array;
+		private var i:int;
 		
 		public function RandomArrayOutput() {
-			
 		}
-		
+
+
 		//--------------------------------------------------------------------------
 		//
 		//  Methods
@@ -44,8 +42,7 @@ package com {
 		
 		
 		/**
-		 * Создание случайной перестановки
-		 * @param	array Массив случайную перестановку которого, нужно создать
+		 * Creating a random permutation
 		 */
 		public function createRandom(array:Array):void {
 			this.arrayData = array;
@@ -54,49 +51,30 @@ package com {
 			this.isPrinted = false;
 			
 			var k:int;
-			while (k <= array.length * 2) {					// Делаем 2k случайных перестановок
+			while (k <= array.length * 2) {					// Do 2000 random permutations
 				var r1:int = Math.random() * array.length;
 				var r2:int = Math.random() * array.length;
 				this.arrayIndx = swap(r1, r2, this.arrayIndx);
 				k++;
 			}
 		}
-		
-				
-		/**
-		 * Получить элемент массива случайно
-		 * @return Случайный элемент массива
-		 */
+
 		public function getRandomItem():* {
 			var item:* = this.arrayData[this.arrayIndx[i]];
-			if (i == arrayIndx.length - 1)					// Когда дойдем до конца массива - установим соответствующий флаг
-				isPrinted = true;
+			if (i == arrayIndx.length - 1)
+				this.isPrinted = true;
 			i++;
 			return item;
 		}
-		
-				
-		/**
-		 * Создать массив заполненный индексами входящего массива
-		 * @param	array Входящий массив
-		 * @return Массив индексов
-		 */
+
 		public function createArrayIndx(array:Array):Array {
 			var arrResult:Array = new Array();
 			for (var i:int = 0; i < array.length; i++) {
 				arrResult.push(i);
 			}
 			return arrResult;
-		}		
-		
-		
-		/**
-		 * Поменять местами два элемента массива, указанных индексов
-		 * @param	indxItem1 Индекс первого элемента
-		 * @param	indxItem2 Индекс второго элемента
-		 * @param	array Массив в котором делаем перестановку
-		 * @return Массив из сделанной перестановкой
-		 */
+		}
+
 		public function swap(indxItem1:int, indxItem2:int, array:Array):Array {
 			var tmpItem:* = array[indxItem1];
 			array[indxItem1] = array[indxItem2];
@@ -104,7 +82,5 @@ package com {
 			return array;
 		}
 		
-		
 	}
-	
 }

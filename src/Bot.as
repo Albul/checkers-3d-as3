@@ -29,10 +29,10 @@ package  {
 		
 		private var arrCheckers:Array;			// Массив доступных шашек боту
 		private var teamComputer:Boolean;		// Команда за которую играет компьютер
-		private var logic:Logic;				// Указатель на класс логики игры
+		private var logic:Logic;
 		private var level:int;					// Уровень сложности бота
 		
-		/**
+		/*
 		 * Конструктор
 		 * @param	teamComputer Команда бота
 		 * @param	arrCheckers Массив шашек бота
@@ -141,15 +141,10 @@ package  {
 			}
 			return false;
 		}
-		
-		
-		/**
-		 * Удалить бота. Он перестанет реагировать на смену хода
-		 */
+
 		public function removeBot():void {
 			logic.removeEventListener(Logic.WHO_MOVE_CHANGED, onWhoMoveChanged);
 		}
 
 	}
-
 }

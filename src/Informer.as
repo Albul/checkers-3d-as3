@@ -26,34 +26,27 @@ package {
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.setTimeout;
-	import managers.PageManager;
-	import pages.MenuPage;
-	
+
 	/**
-	 * Класс отвечает за вывод информации о количестве живых шашек каждой команды, чей сейчас ход, а также кнопка выхода в главное меню
+	 * Class is responsible for displaying information on the number of alive checkers each team,
+	 * whose turn it is, and also contains a button exit to main menu
 	 */
 	public class Informer extends Sprite
 	{
-		static public const END_GAME:String = "endGame";  // Константа для события завершения игры
+		static public const END_GAME:String = "endGame";
 		
-		private var logic:Logic; // Указатель на класс логики игры
+		private var logic:Logic;
 		
 		private var tfWhiteValue:TextField;
 		private var tfBlackValue:TextField;
 		private var tfMoveValue:TextField;
-		private var btnBack:SimpleButton;
-		
-		/**
-		 * Конструктор
-		 * @param	logic Класс логики игры
-		 */
+		private var btnBack:SimpleButton;   // The back button in the main menu
+
 		public function Informer(logic:Logic) {
-			
 			this.logic = logic;
-			logic.addEventListener(Logic.CHECKER_KILLED, onCheckerKilled); 		// Слушаем событие убийства шашки
-			logic.addEventListener(Logic.WHO_MOVE_CHANGED, onWhoMoveChanged); 	// Слушаем событие смены хода команды
+			logic.addEventListener(Logic.CHECKER_KILLED, onCheckerKilled);
+			logic.addEventListener(Logic.WHO_MOVE_CHANGED, onWhoMoveChanged);
 			 
-			// Кнопка возврата в меню
 			btnBack = new ButtonBack();
 			btnBack.addEventListener(MouseEvent.CLICK, onBtnClick);
 			this.addChild(btnBack);
@@ -66,7 +59,6 @@ package {
 			
 			var format:TextFormat = new TextFormat("Verdana", 14, 0xffffff, true);
 			
-			// Текстовое поле для надписи
 			var tfWhite:TextField = new TextField();
 			tfWhite.x = 10;
 			tfWhite.y = 10;
@@ -77,7 +69,6 @@ package {
 			tfWhite.text = "White:";
 			this.addChild(tfWhite);
 			
-			// Текстовое поле для надписи
 			var tfBlack:TextField = new TextField();
 			tfBlack.x = 10;
 			tfBlack.y = 35;
@@ -87,7 +78,6 @@ package {
 			tfBlack.text = "Black:";
 			this.addChild(tfBlack);	
 			
-			// Текстовое поле для надписи
 			var tfMove:TextField = new TextField();
 			tfMove.x = 10;
 			tfMove.y = 60;
@@ -99,7 +89,6 @@ package {
 			
 			format.color = 0xff0000;
 			
-			// Текстовое поле для вывода количества черных шашек
 			tfBlackValue = new TextField();
 			tfBlackValue.autoSize = "left";
 			tfBlackValue.selectable = false;
@@ -108,7 +97,6 @@ package {
 			tfBlackValue.defaultTextFormat = format;
 			this.addChild(tfBlackValue);
 			
-			// Текстовое поле для вывода количества белых шашек			
 			tfWhiteValue = new TextField();
 			tfWhiteValue.autoSize = "left";
 			tfWhiteValue.selectable = false;
@@ -119,7 +107,6 @@ package {
 			
 			format.color = 0x00cc00;
 			
-			// Текстовое поле отображает чей сейчас ход
 			tfMoveValue = new TextField();
 			tfMoveValue.autoSize = "left";
 			tfMoveValue.selectable = false;
@@ -131,69 +118,62 @@ package {
 			onCheckerKilled(null);
 			onWhoMoveChanged(null);
 		}
-		
-		
-		/**
-		 * Нажали на кнопку возврата в главное меню
-		 */
+
+		private function endGame():void {
+			this.dispatchEvent(new Event(END_GAME));
+			parent.removeChild(this);
+		}
+
+
+		//--------------------------------------------------------------------------
+		//
+		//  Event handlers
+		//
+		//--------------------------------------------------------------------------
+
+
 		private function onBtnClick(e:MouseEvent):void {
-			if (this.logic.NumberWhite > 0 && this.logic.NumberBlack > 0) { // Если пытаемся покинуть игру раньше времени тогда вывести сообщение о проиграше игрока :)
-				var warning:WarningText = new WarningText("Вы проиграли!!!", 0xff0000, 0.8, 3, 36, true, "Tahoma", 640, 480, 45);
+			if (this.logic.NumberWhite > 0 && this.logic.NumberBlack > 0) {
+				var warning:WarningText = new WarningText("Вы проиграли!!!",
+						0xff0000, 0.8, 3, 36, true, "Tahoma", 640, 480, 45);
 				warning.x = stage.stageWidth / 2;
 				warning.y = stage.stageHeight / 2;
 				stage.addChild(warning);
-				setTimeout(endGame, 3000);		// Запускаем ф-ю завершения игры через определенный отрезок времени
+				setTimeout(endGame, 3000);
 			}
 			else {
 				endGame();
 			}
 		}
-		
 
-		/**
-		 * Убили шашку
-		 */
 		private function onCheckerKilled(e:Event):void {
 			tfWhiteValue.text = String(this.logic.NumberWhite);
 			tfBlackValue.text = String(this.logic.NumberBlack);
 			
-			// Если игрок проиграл - вывести сообщение
+			// The player has already lost
 			if ((this.logic.NumberWhite == 0 && this.logic.teamPlayer == Logic.WHITE_TEAM) 		
 				|| (this.logic.NumberBlack == 0 && this.logic.teamPlayer == Logic.BLACK_TEAM)) {				
-				var warning:WarningText = new WarningText("Вы проиграли!!!", 0xff0000, 0.8, 7, 36, true, "Tahoma", 640, 480, 45);
+				var warning:WarningText = new WarningText("Вы проиграли!!!",
+						0xff0000, 0.8, 7, 36, true, "Tahoma", 640, 480, 45);
 				warning.x = stage.stageWidth / 2;
 				warning.y = stage.stageHeight / 2;
 				stage.addChild(warning);
 			}
 			
-			// Если игрок выиграл - вывести сообщение
+			// The player has already won
 			if ((this.logic.NumberBlack == 0 && this.logic.teamPlayer == Logic.WHITE_TEAM)
 				|| (this.logic.NumberWhite == 0 && this.logic.teamPlayer == Logic.BLACK_TEAM)) {
-				var warning:WarningText = new WarningText("Вы победили!!!", 0x00ff00, 0.8, 7, 36, true, "Tahoma", 640, 480, 45);
+				var warning:WarningText = new WarningText("Вы победили!!!",
+						0x00ff00, 0.8, 7, 36, true, "Tahoma", 640, 480, 45);
 				warning.x = stage.stageWidth / 2;
 				warning.y = stage.stageHeight / 2;
 				stage.addChild(warning);
 			}
 		}
-		
-		
-		/**
-		 * Произошла смена хода команд
-		 */
+
 		private function onWhoMoveChanged(e:Event):void {
 			tfMoveValue.text = String(this.logic.whoMove? "Black" : "White");
 		}
-			
-		
-		
-		/**
-		 * Завершыть игру
-		 */
-		private function endGame():void {
-			this.dispatchEvent(new Event(END_GAME));		// Создание события завершения игры
-			parent.removeChild(this);						// Удалить контейнер со сцены
-		}
-		
 	
 	}
 }

@@ -18,67 +18,42 @@
     along with Foobar.  If not, see < http://www.gnu.org/licenses/>.
 */
 package  {
-	import alternativa.engine3d.core.events.MouseEvent3D;
 	import alternativa.engine3d.core.Object3D;
 	import alternativa.engine3d.objects.Mesh;
-	import flash.events.Event;
-	
-	/**
-	 * Класс клетки. Клетка имеет  индекс, флаг занятости, и указатель на шашку которая на ней стоит
-	 */
-	public class Cell extends Object3D {
-		
-		//----------------------------------
-		//  Public properties
-		//----------------------------------		
-				
-		public var isOccupied:Boolean;		// Указывает на то, стоит ли шашка на этой клетке
-		public var currentChecker:Checker;	// Указатель на текущую шашку (которая стоит на этой клетке), == null если шашка на ней не стоит
-		
-		//----------------------------------
-		//  Private properties
-		//----------------------------------
-		
-		private var child:Mesh;
-		private var _i:int;					// Рядок в котором находится клетка
-		private var _j:int;					// Столбец в котором находится клетка
-		
-		/**
-		 * Конструктор
-		 * @param	obj Меш самой клетки
-		 * @param	name Bмя клетки (2a, 5h)
-		 */	
-		public function Cell(obj:Mesh, name:String) {
 
-			// Запоминаем индекс клетки
+	public class Cell extends Object3D {
+
+		public var isOccupied:Boolean;
+		public var currentChecker:Checker;	// A pointer to the checker that is on this cell
+
+		private var child:Mesh;
+		private var _i:int;
+		private var _j:int;
+
+		public function Cell(obj:Mesh, name:String) {
+			// Remember the index of the cell
 			this._i = int(name.substr(1, 1));
-			this._j = int(name.charCodeAt(0)) - 96;		// Превращаем букву в цифру			
-			
+			this._j = int(name.charCodeAt(0)) - 96;		// Transform letter into digit
 
 			this.child = obj;
 			this.addChild(this.child);
 			
-			// Координаты контейнера такие как координаты меша
 			this.x = obj.x;
 			this.y = obj.y;
 			this.z = obj.z;
 			
-			this.child.x = this.child.y = this.child.z = 0;			// Координаты меша обнуляем
-			this.child.useHandCursor = true;						// При наведении на клетку, курсор будет у виде руки
+			this.child.x = this.child.y = this.child.z = 0;
+			this.child.useHandCursor = true;
 		}
 		
-		
-		
+
 		//--------------------------------------------------------------------------
 		//
 		//  Public methods
 		//
 		//--------------------------------------------------------------------------
-		
-		
-		/**
-		 * Получить индекс клетки
-		 */
+
+
 		public function getIndex():String {
 			return String(this.i) + String(this.j);
 		}
@@ -92,5 +67,4 @@ package  {
 		}
 				
 	}
-
 }

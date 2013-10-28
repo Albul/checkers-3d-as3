@@ -36,8 +36,8 @@ package  {
 		static public const BLACK_TEAM:Boolean = true;
 		static public const MAX_SIZE_BOARD:int = 8;
 		
-		static public const WHO_MOVE_CHANGED:String = "whoMoveChanged";		// Константа события - поменялся ход команды
-		static public const CHECKER_KILLED:String = "checkerKilled";		// Константа события - убили шашку
+		static public const WHO_MOVE_CHANGED:String = "whoMoveChanged";
+		static public const CHECKER_KILLED:String = "checkerKilled";
 		
 		// Места куда складываются убитые шашки разных команд
 		private var cemetryWhite:Vector3D = new Vector3D(-40, -55, -4.3);		
@@ -255,56 +255,34 @@ package  {
 									
 			return false;	
 		}
-	
-				
-		/**
-		 * Смена хода команды. Обнуляем последнюю шаку которая сделала ход и бой
-		 */
+
 		public function set whoMove(value:Boolean):void {
 			_whoMove = value;
 			this.lastFightingChecker = null;
 			this._lastMovingChecker = null;
-			this.dispatchEvent(new Event(WHO_MOVE_CHANGED));	// Событие - команда поменялась
+			this.dispatchEvent(new Event(WHO_MOVE_CHANGED));
 		}
-		
-		
+
 		public function get whoMove():Boolean {
 			return _whoMove;
 		}
-		
-		
-		/**
-		 * Получить последнюю шашку которая ходила
-		 */
+
 		public function get lastMovingChecker():Checker {
 			return _lastMovingChecker;
 		}
-		
-		
-		/**
-		 * Получить цвет команды игрока
-		 */
+
 		public function get teamPlayer():Boolean {
 			return _teamPlayer;
 		}
-		
-		
-		/**
-		 * Получить количество живых белых шашек
-		 */
+
 		public function get NumberWhite():int {
 			return this.arrWhiteCheckers.length;
 		}	
-		
-		
-		/**
-		 * Получить количество живых черных шашек
-		 */
+
 		public function get NumberBlack():int {
 			return this.arrBlackCheckers.length;
 		}
-		
-		
+
 		
 		//--------------------------------------------------------------------------
 		//
@@ -641,45 +619,34 @@ package  {
 			
 			this.selectedChecker = null;
 		}
-		
-		
-		
+
 		
 		//--------------------------------------------------------------------------
 		//
 		//  Event handlers
 		//
 		//--------------------------------------------------------------------------
-		
-		
-		/**
-		 * Кликнули по клетке
-		 */
+
+
 		private function onCellClicked(e:MouseEvent3D):void {
 			if (this.selectedChecker == null)
 				return;
 			
-			if (checkMove(this.selectedChecker, Cell(e.currentTarget), true)) {		// Проверить возможность хода на эту клетку, и сделать его если это возможно 
-				if (!checkFightingTeam(whoMove)) {									// Проверить возможность сделать бой для текущей команды, если это невозможно тогда отдать ход противоположной команде
+			if (checkMove(this.selectedChecker, Cell(e.currentTarget), true)) {
+				if (!checkFightingTeam(whoMove)) {
 					deselectChecker();
 					whoMove = !whoMove;
 				}
 			}
 		}
-		
-		
-		/**
-		 * Кликнули по шашке
-		 */
+
 		private function onCheckerClicked(e:MouseEvent3D):void {
-			if (this.teamPlayer != this.whoMove)				// Если сейчас не игрока ход тогда выйти из обработчика
+			if (this.teamPlayer != this.whoMove)
 				return;
 				
 			var checker:Checker = Checker(e.currentTarget);
-			selectChecker(checker);								// Выделить шашку по которой кликнули
+			selectChecker(checker);
 		}
-		
-		
-	}
 
+	}
 }

@@ -16,50 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com {
-	
-	/**
-	 * Расширенная математическая библиотека
-	 */
-	
-	public class MathUtils {
-		
-		public function MathUtils() {
-			
-		}
-		
 
-		/**
-		 * Округление входящего число до определенного значения
-		 * @param	value Число которое надо округлить
-		 * @param	to Значение к чему округляем
-		 * @return
-		 */
+	public class MathUtils {
+
 		static public function roundTo(value:Number, to:Number):Number {
 			//return (Math.floor(value / to) * to);
 			return value - value % to;	
 		}
-		
 
-		/**
-		 * Конвертировать градуси в радианы
-		 * @param	value
-		 * @return
-		 */
 		static public function toRadians(value:Number):Number {
 			return (Math.PI / 180) * value;
 		}
-		
 
-		/**
-		 * Конвертировать радианы в градуси
-		 * @param	value
-		 * @return
-		 */
 		static public function toDegrees(value:Number):Number {
 			return (180 * value) * Math.PI;
 		}
-		
-		
+
 	}
-	
 }
