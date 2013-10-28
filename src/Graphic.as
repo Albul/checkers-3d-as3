@@ -28,7 +28,7 @@ package  {
 	import flash.display3D.Context3D;
 	
 	/**
-	 * Класс отвечает за загрузку и расстановку графики на сцене
+	 * Class is responsible for loading and arrangement graphics on the stage
 	 */
 	public class Graphic extends Object {
 		

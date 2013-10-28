@@ -33,7 +33,7 @@ package  {
 		public function Cell(obj:Mesh, name:String) {
 			// Remember the index of the cell
 			this._i = int(name.substr(1, 1));
-			this._j = int(name.charCodeAt(0)) - 96;		// Transform letter into digit
+			this._j = int(name.charCodeAt(0)) - 96; // Transform letter into digit
 
 			this.child = obj;
 			this.addChild(this.child);

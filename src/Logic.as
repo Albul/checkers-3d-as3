@@ -74,7 +74,7 @@ package  {
 			this.structCells = structCells;
 			this.strucCells = new StructureCells(structCells);		// Создаем дополнительную структуру клеток для упрощения доступа к ним
 			
-			addListenersToCheckers();								// Добавляем слушателей шашки игрока и на все клетки доски
+			addListeners();								// Добавляем слушателей шашки игрока и на все клетки доски
 			
 			bot = new Bot(!teamPlayer, (!teamPlayer? this.arrBlackCheckers : this.arrWhiteCheckers), this, levelGame);	// Создаем бота
 		}
@@ -573,13 +573,9 @@ package  {
 			
 			return false;
 		}
-		
-		
-		/**
-		 * Добавляем слушателей шашки игрока и на все клетки доски
-		 */
-		private function addListenersToCheckers():void {
-			if (this.teamPlayer) {								// В зависимости от того за какую команду играет игрок, на те шашки цепляем слушателей на клик
+
+		private function addListeners():void {
+			if (this.teamPlayer) {
 				for each (var checker:Checker in this.arrBlackCheckers) {
 					checker.addEventListener(MouseEvent3D.CLICK, onCheckerClicked);
 				}	
@@ -590,17 +586,11 @@ package  {
 				}	
 			}
 			
-			// На все клетки доски цепляем слушателя на клик
 			for each (var cell:Cell in this.structCells) {
 				cell.addEventListener(MouseEvent3D.CLICK, onCellClicked);
 			}
 		}
-		
-		
-		/**
-		 * Выделить входящую шашку (приподнять ее над остальными)
-		 * @param	checker
-		 */
+
 		private function selectChecker(checker:Checker):void {
 			if (this.selectedChecker != null)
 				this.selectedChecker.lower();
@@ -608,11 +598,7 @@ package  {
 			this.selectedChecker = checker;
 			checker.raise();
 		}
-		
-		
-		/**
-		 * Снять последнее выделение. Опускает на доску последнюю поднятую шашку
-		 */
+
 		private function deselectChecker():void {
 			if (this.selectedChecker != null)
 				this.selectedChecker.lower();

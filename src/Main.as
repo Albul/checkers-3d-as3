@@ -111,7 +111,7 @@ package {
 			controller = new SimpleObjectController(camera.view, cameraContainer, 400);
 			controller.lookAtXYZ(0, 0, 0);
 			controller.unbindAll();
-			cameraContainer.rotationX = MathUtils.toRadians(-130);		// In order to look at the board from a height
+			cameraContainer.rotationX = MathUtils.toRadians(-130);  // In order to look at the board from a height
 			// Orient the camera to the selected team color
 			cameraContainer.rotationZ = settings["team"]? MathUtils.toRadians(180): MathUtils.toRadians(0);
 			controller.updateObjectTransform();
@@ -159,7 +159,7 @@ package {
 		}
 
 		private function cameraZoomIn():void {
-			if (camera.z < -30) 				// Set the limit on the zoom
+			if (camera.z < -30)     // Set the limit on the zoom
 				camera.z += 10;
 		}		
 
@@ -198,7 +198,7 @@ package {
 			
 			createLogic();
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			camera.view.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);		// For the zoom of camera
+			camera.view.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel); // For the zoom of camera
 		}
 
 		public function onEndGame(e:Event):void {
@@ -215,7 +215,7 @@ package {
 			if (this.isStart) {
 				camera.view.width = stage.stageWidth;
 				camera.view.height = stage.stageHeight;
-				informer.x = stage.stageWidth - informer.width - 1;		// Set the informer in the top right corner
+				informer.x = stage.stageWidth - informer.width - 1; // Set the informer in the top right corner
 			}
 			
 			// Set the main menu on the center of the stage

@@ -31,35 +31,17 @@ package  {
 		private var teamComputer:Boolean;		// Команда за которую играет компьютер
 		private var logic:Logic;
 		private var level:int;					// Уровень сложности бота
-		
-		/*
-		 * Конструктор
-		 * @param	teamComputer Команда бота
-		 * @param	arrCheckers Массив шашек бота
-		 * @param	logic Указатель на класс логики игры
-		 * @param	level Уровень сложности бота
-		 */
+
 		public function Bot(teamBot:Boolean, arrCheckers:Array, logic:Logic, level:int = 1) {
 			this.level = level;
 			this.teamComputer = teamBot;
 			this.arrCheckers = arrCheckers;
 			this.logic = logic;
 			
-			logic.addEventListener(Logic.WHO_MOVE_CHANGED, onWhoMoveChanged);	// Вешаем слушателя на смену хода команд
-			if (teamBot == Logic.WHITE_TEAM) toMove();							// Если компьютер играет за белых тогда сразу делаем ход
+			logic.addEventListener(Logic.WHO_MOVE_CHANGED, onWhoMoveChanged);
+			if (teamBot == Logic.WHITE_TEAM) toMove();
 		}
-	
-				
-		/**
-		 * Изменилась команда которая должна ходить
-		 */
-		private function onWhoMoveChanged(e:Event):void {
-			if (logic.whoMove == this.teamComputer) {
-				setTimeout(toMove, 750);					// Сделать ход из задержкой (для красоты)
-			}
-		}
-		
-		
+
 		/**
 		 * Сделать завершенный ход
 		 */
@@ -72,8 +54,7 @@ package  {
 			
 			logic.whoMove = !this.teamComputer;			// Отдаем ход противоположенной команде
 		}
-		
-		
+
 		/**
 		 * Сделать единичный ход
 		 * @param	level Уровень сложности хода
@@ -144,6 +125,12 @@ package  {
 
 		public function removeBot():void {
 			logic.removeEventListener(Logic.WHO_MOVE_CHANGED, onWhoMoveChanged);
+		}
+
+		private function onWhoMoveChanged(e:Event):void {
+			if (logic.whoMove == this.teamComputer) {
+				setTimeout(toMove, 750);
+			}
 		}
 
 	}
