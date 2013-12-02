@@ -23,14 +23,14 @@ package  {
 	import flash.utils.setTimeout;
 	
 	/**
-	 * Класс отвечает за поведение бота
+	 * Class implements the computer player
 	 */
 	public class Bot extends Object {
 		
-		private var arrCheckers:Array;			// Массив доступных шашек боту
-		private var teamComputer:Boolean;		// Команда за которую играет компьютер
+		private var arrCheckers:Array;			// The array contents alive checkers of bot
+		private var teamComputer:Boolean;
 		private var logic:Logic;
-		private var level:int;					// Уровень сложности бота
+		private var level:int;					// Difficulty level of bot
 
 		public function Bot(teamBot:Boolean, arrCheckers:Array, logic:Logic, level:int = 1) {
 			this.level = level;
@@ -43,43 +43,42 @@ package  {
 		}
 
 		/**
-		 * Сделать завершенный ход
+		 * Make a finished move
 		 */
 		private function toMove():void {
 			do {
-				if (!makeMove(this.level)) {			// Если не получится сделать ход 2 - го левела, тогда сделать ход на левел ниже
+				if (!makeMove(this.level)) {
 					makeMove(this.level - 1);
 				}
 			} while (this.logic.checkFightingTeam(this.teamComputer));
 			
-			logic.whoMove = !this.teamComputer;			// Отдаем ход противоположенной команде
+			logic.whoMove = !this.teamComputer;
 		}
 
 		/**
-		 * Сделать единичный ход
-		 * @param	level Уровень сложности хода
-		 * @return true - если ход был сделан, false - иначе
+		 * Make a single move
+		 * @param level
+		 * @return true - if the move was made, false - otherwise
 		 */
 		private function makeMove(level:int):Boolean {
 			switch (level) {
-				case 1:											// Первый уровень сложности хода
-					if (this.logic.lastMovingChecker != null) {	// Если существует последняя шашка которая сделала ход, то только ею и возможно ходить, а точнее бить, тогда делаем ею бой
+				case 1:
+					// If there is checker that made the last move, then continue to make it move
+					if (this.logic.lastMovingChecker != null) {
 						this.logic.lastMovingChecker.raise();
 						this.logic.checkFightingTeam(this.teamComputer, true);
 						this.logic.lastMovingChecker.lower();
 					}
 					else {
-						// Создаем случайную выборку массива шашек
+						// Randomly select checker which make the move
 						var randArrOut:RandomArrayOutput = new RandomArrayOutput();		
 						randArrOut.createRandom(this.arrCheckers);
-							
-						// Проходим один раз выборку
 						while (!randArrOut.isPrinted) {
-							var checker:Checker = randArrOut.getRandomItem();		// Получаем случайную шашку
-							for each (var cell:Cell in logic.structCells) {			// Пробегаем все клетки доски
-								if (this.logic.checkMove(checker, cell, false)) {	// Проверяем возможность хода выбранyой шашки на выбраyную клетку, и если возможно то ходим ею
+							var checker:Checker = randArrOut.getRandomItem();
+							for each (var cell:Cell in logic.structCells) {
+								if (this.logic.checkMove(checker, cell, false)) {
 									checker.raise();
-									this.logic.checkMove(checker, cell, true);		// Делаем ход
+									this.logic.checkMove(checker, cell, true);
 									checker.lower();
 									return true;
 								}
@@ -88,25 +87,23 @@ package  {
 						return false;
 					}
 				break;
-				case 2: 											// Второй уровень сложности хода
-					if (this.logic.lastMovingChecker != null) {		// Если существует последняя шашка которая сделала ход, то только ею и возможно ходить, а точнее бить, тогда делаем ею бой
+				case 2:
+					if (this.logic.lastMovingChecker != null) {
 						this.logic.lastMovingChecker.raise();
 						this.logic.checkFightingTeam(this.teamComputer, true);
 						this.logic.lastMovingChecker.lower();
 					}
 					else {
-						// Создаем случайную выборку массива шашек
-						var randArrOut:RandomArrayOutput = new RandomArrayOutput();		
+						var randArrOut:RandomArrayOutput = new RandomArrayOutput();
 						randArrOut.createRandom(this.arrCheckers);
-							
-						// Проходим один раз выборку
 						while (!randArrOut.isPrinted) {
-							var checker:Checker = randArrOut.getRandomItem();		// Получаем случайную шашку
-							for each (var cell:Cell in logic.structCells) {			// Пробегаем все клетки доски
-								if (this.logic.checkMove(checker, cell, false)) {	// Проверяем возможность хода выбранной шашки на выбранную клетку
-									if (!this.logic.checkKilling(checker.currentCell, cell)) {	// Если ход возможен, тогда проверяем может ли противник побить шашку на выбраной клетке
+							var checker:Checker = randArrOut.getRandomItem();
+							for each (var cell:Cell in logic.structCells) {
+								if (this.logic.checkMove(checker, cell, false)) {
+									// Check whether the enemy beat checker by the selected cell
+									if (!this.logic.checkKilling(checker.currentCell, cell)) {
 										checker.raise();
-										this.logic.checkMove(checker, cell, true);				// Если соперник не может побить, тогда делаем ход
+										this.logic.checkMove(checker, cell, true);
 										checker.lower();
 										return true;
 									}

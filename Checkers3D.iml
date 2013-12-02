@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="Checkers3D">
     <configurations>
-      <configuration name="Checkers3D" pure-as="true" main-class="Main" output-file="Checkers3D.swf" output-folder="$MODULE_DIR$/bin" wrapper-template-path="$MODULE_DIR$/html-template">
+      <configuration name="Checkers3D" pure-as="true" main-class="Main" output-file="Checkers3D.swf" output-folder="$MODULE_DIR$/bin" use-html-wrapper="true" wrapper-template-path="$MODULE_DIR$/html-template">
         <dependencies target-player="11.5">
           <entries>
             <entry library-name="pageUI" library-level="project">
