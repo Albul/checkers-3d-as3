@@ -97,7 +97,6 @@ package  {
 		//  Public methods
 		//
 		//--------------------------------------------------------------------------
-		
 
 		public function arrangeCheckers():void {
 			
